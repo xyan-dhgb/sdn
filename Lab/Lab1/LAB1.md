@@ -158,12 +158,20 @@ openflow_v4.type==14 # OFP FlowMod
 | **Reserved** | Dự phòng cho những mục trong tương lai và luôn có giá trị 0 để sử dụng trong phiên bản này. |
 
 ### Gói tin OFP Packet In
-| Trường thông tin | Mô tả |
+| Trường thông tin  | Mô tả |
 |------------------|-------|
-| Buffer_id | ID của buffer trên switch |
-| Total_len | Tổng độ dài gói tin |
-| Reason | Lý do gửi |
-| Table_id | ID của bảng flow |
+| **Version** | Phiên bản của OpenFlow: 0x04 cho OpenFlow 1.3 |
+| **Type** | Loại gói tin: OFPT_FEATURES_REQUEST |
+| **Length** | Tổng kích thước của gói tin tính bằng byte |
+| **Transaction ID** | ID của giao dịch để kiểm soát phản hồi từ switch |
+| **Buffer_id** | ID của buffer trên switch |
+| **Total_len** | Tổng độ dài gói tin |
+| **Reason** | Lý do gửi (TABLE_MISS, ACTION, INVALID_TTL) |
+| **Table_id** | ID của bảng flow |
+| **Cookie** | Giá trị do controller đặt |
+| **Match** | Thông tin khớp |
+| **Pad** | Căn chỉnh byte nhằm đảm bảo dữ liệu trong gói tin có kích thước phù hợp với kiến trúc bộ xử lý |
+| **Data** | Dữ liệu gói tin |
 
 ### Gói tin OFP FlowMod
 | Trường thông tin | Mô tả |
