@@ -86,7 +86,7 @@ nano simple_switch_13.py
 
 #### Khởi động Ryu Controller
 ```bash
-ryu-manager simple_switch_13.py --verbose --observe-links
+ryu-manager simple-switch_13.py --verbose --observe-links
 ```
 
 Nếu gặp lỗi `ImportError: cannot import name 'ALREADY_HANDLED' from 'eventlet.wsgi'`, thực hiện:
