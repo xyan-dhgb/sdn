@@ -136,11 +136,11 @@ openflow_v4.type==14 # OFP FlowMod
 
 ### Gói tin OFP Features Request
 | Trường thông tin | Mô tả |
-|------------------|-------|
-| Version | Phiên bản OpenFlow: 0x04 |
-| Type | Loại gói tin: OFPT_FEATURES_REQUEST |
-| Length | Tổng kích thước gói tin |
-| Transaction ID | ID của giao dịch |
+|-----------------|-------|
+| **Version** | Phiên bản của OpenFlow: 0x04 cho OpenFlow 1.3 |
+| **Type** | Loại gói tin: OFPT_FEATURES_REQUEST |
+| **Length** | Tổng kích thước của gói tin tính bằng byte |
+| **Transaction ID** | ID của giao dịch để kiểm soát phản hồi từ switch |
 
 ### Gói tin OFP Features Reply
 | Trường thông tin | Mô tả |
