@@ -174,11 +174,18 @@ openflow_v4.type==14 # OFP FlowMod
 | **Data** | Dữ liệu gói tin |
 
 ### Gói tin OFP FlowMod
-| Trường thông tin | Mô tả |
+| Trường thông tin  | Mô tả |
 |------------------|-------|
-| Command | Thực hiện thêm/sửa/xóa flow entry |
-| Idle_timeout | Thời gian timeout |
-| Priority | Độ ưu tiên của flow |
+| **Version** | Phiên bản của OpenFlow: 0x04 cho OpenFlow 1.3 |
+| **Type** | Loại gói tin: OFPT_FEATURES_REQUEST |
+| **Length** | Tổng kích thước của gói tin tính bằng byte |
+| **Transaction ID** | ID của giao dịch để kiểm soát phản hồi từ switch |
+| **Cookie, Cookie_mask** | Giá trị do controller đặt |
+| **Table_id** | ID của bảng flow |
+| **Command** | Câu lệnh để thực hiện thêm, sửa, xóa,... |
+| **Idle_timeout, Hard_timeout** | Thời gian hết hạn của flow entry |
+| **Priority** | Độ ưu tiên của flow |
+| **Buffer_id** | ID của buffer trên switch |
 
 ---
 
