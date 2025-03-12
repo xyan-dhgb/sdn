@@ -143,12 +143,19 @@ openflow_v4.type==14 # OFP FlowMod
 | **Transaction ID** | ID của giao dịch để kiểm soát phản hồi từ switch |
 
 ### Gói tin OFP Features Reply
-| Trường thông tin | Mô tả |
+| Trường thông tin  | Mô tả |
 |------------------|-------|
-| Datapath ID | ID duy nhất của switch |
-| n_buffers | Số lượng buffer của switch |
-| n_tables | Số lượng bảng điều khiển |
-| Capabilities | Khả năng của switch |
+| **Version** | Phiên bản của OpenFlow: 0x04 cho OpenFlow 1.3 |
+| **Type** | Loại gói tin: OFPT_FEATURES_REQUEST |
+| **Length** | Tổng kích thước của gói tin tính bằng byte |
+| **Transaction ID** | ID của giao dịch để kiểm soát phản hồi từ switch |
+| **Datapath ID** | ID duy nhất của switch, được ánh xạ đến địa chỉ MAC của switch. |
+| **n_buffers** | Số lượng buffer mà switch có thể lưu trữ tạm thời cho các gói tin chưa có rule xử lý. |
+| **n_tables** | Số lượng bảng điều khiển (flow tables) mà switch hỗ trợ. |
+| **auxiliary_id** | Định danh kết nối giữa switch và controller. Giá trị 0 chỉ ra rằng đây là kết nối chính. |
+| **Pad** | Căn chỉnh byte nhằm đảm bảo dữ liệu trong gói tin có kích thước phù hợp khi truyền. |
+| **Capabilities** | Chỉ ra các khả năng mà switch hỗ trợ. Giá trị 0x00000004 có nghĩa là switch hỗ trợ Flow Statistics. |
+| **Reserved** | Dự phòng cho những mục trong tương lai và luôn có giá trị 0 để sử dụng trong phiên bản này. |
 
 ### Gói tin OFP Packet In
 | Trường thông tin | Mô tả |
