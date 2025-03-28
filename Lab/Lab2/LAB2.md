@@ -83,38 +83,46 @@ which ovsdb-server
 ```
 -  Nếu kết quả trả về là `/usr/local/sbin/ovsdb-server`, điều này có nghĩa là hệ thống đang dùng phiên bản OVS từ mã nguồn thay vì từ APT
 - Thực hiện thao tác dưới đây để tiến hành xóa các file OVS cài đặt từ mã nguồn.
-    - Dừng dịch vụ Open vSwitch:
+
+**Dừng dịch vụ Open vSwitch**:
 ```bash
  sudo systemctl stop openvswitch-switch
 ```
-    - Dừng tiến trình ovsdb-server
+
+**Dừng tiến trình ovsdb-server**
 ```bash
 sudo pkill -f ovsdb-server
 ```
-    - Xóa thư mục cấu hình OVS (phiên bản cài từ mã nguồn)
+**Xóa thư mục cấu hình OVS (phiên bản cài từ mã nguồn)**
 ```bash
 sudo rm -rf /usr/local/etc/openvswitch
 ```
-    - Xóa thư mục chứa tệp chạy của OVS
+
+**Xóa thư mục chứa tệp chạy của OVS**
 ```bash
 sudo rm -rf /usr/local/var/run/openvswitch
 ```
-    - Xóa nhật ký OVS
+
+**Xóa nhật ký OVS**
 ```bash
 sudo rm -rf /usr/local/var/log/openvswitch
 ```
-    - Xóa các tệp thực thi OVS trong /usr/local/bin/
+
+**Xóa các tệp thực thi OVS trong /usr/local/bin/**
 ```bash
 sudo rm -rf /usr/local/sbin/ovs-*
 ```
-    - Xóa các tệp thực thi OVS trong /usr/local/bin
+
+**Xóa các tệp thực thi OVS trong /usr/local/bin**
 ```bash
  sudo rm -rf /usr/local/bin/ovs-*
  ```
-    - Xóa các tệp tài nguyên chia sẻ của OVS
+
+**Xóa các tệp tài nguyên chia sẻ của OVS**
 ```bash
 sudo rm -rf /usr/local/share/openvswitch
 ```
+
 -  Sau đó, kiểm tra lại đường dẫn, kết quả mong muốn là: /usr/sbin ovsdb-server
 ![Kiểm tra đường dẫn ovsdb-server](/Lab/asset/ovsdb-server-datapath.png)
 
