@@ -164,7 +164,9 @@ sudo mn --controller=remote,ip=127.0.0.1,port=6653 -- topo=single,3 --switch=ovs
         - protocols=OpenFlow13: Bật giao thức OpenFlow 1.3.
     -  --mac: Gán địa chỉ MAC tự động theo thứ tự.
 - Kết quả như ảnh dưới:
+
 ![Kết quả khi tạo topology](/Lab/asset/topology-creation.png)
+
 - Tại giao diện Mininet, kiểm tra các kết nối:
 ```bash
 mininet> net
