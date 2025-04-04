@@ -147,6 +147,7 @@ touch simple_switch_13.py
 ryu-manager simple_switch_13.py --verbose
 ```
 - Chúng ta sẽ thấy đầu ra tương tự như sau
+ 
 ![Thực hiện Ryu controller](/Lab/asset/starting-ryu-controller.png)
 
 **Bước 4:** Mở terminal thứ 2, chạy lệnh sau để tạo topology với 3 host kết nối qua Open vSwitch, và kết nối controller qua protocol OpenFlow 1.3
