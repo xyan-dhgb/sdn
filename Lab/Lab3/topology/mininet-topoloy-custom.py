@@ -12,7 +12,12 @@ from mininet.link import TCLink, Intf
 from subprocess import call
 
 class CustomTopology(Topo):
-    "Topology như yêu cầu của bài lab với 4 switch và 16 host"
+    '''
+        Chương trình tạo mạng SDN/OpenFlow với topology gồm:
+        - 1 controller
+        - 4 switch 
+        - 16 host
+    '''
 
     def build(self):
         # Thêm Controller (C0) - sẽ được kết nối khi chạy mininet
