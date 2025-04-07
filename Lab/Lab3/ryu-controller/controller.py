@@ -15,6 +15,7 @@ from ryu.topology import event
 from ryu.topology.api import get_switch, get_link
 import networkx as nx
 
+
 class SimpleSwitch13(app_manager.RyuApp):
     OFP_VERSIONS = [ofproto_v1_3.OFP_VERSION]
 
@@ -51,7 +52,7 @@ class SimpleSwitch13(app_manager.RyuApp):
                                           ofproto.OFPCML_NO_BUFFER)]
         self.add_flow(datapath, 0, match, actions)
         self.logger.info("Switch %s connected", datapath.id)
-        
+
         # Initialize switch ports list
         self.switch_ports.setdefault(datapath.id, [])
 
@@ -77,7 +78,7 @@ class SimpleSwitch13(app_manager.RyuApp):
         port_no = msg.desc.port_no
         datapath = msg.datapath
         ofproto = datapath.ofproto
-        
+
         if reason == ofproto.OFPPR_ADD:
             self.logger.info("Port added %s", port_no)
             # Add this port to our list of ports for this datapath
@@ -94,40 +95,40 @@ class SimpleSwitch13(app_manager.RyuApp):
     def handle_arp(self, datapath, in_port, pkt):
         ofproto = datapath.ofproto
         parser = datapath.ofproto_parser
-        
+
         # Extract ethernet and arp packets
         eth = pkt.get_protocol(ethernet.ethernet)
         arp_pkt = pkt.get_protocol(arp.arp)
-        
+
         # Learn MAC address to avoid FLOOD
         self.mac_to_port.setdefault(datapath.id, {})
-        
+
         dst_mac = eth.dst
         src_mac = eth.src
         dpid = datapath.id
-        
+
         self.mac_to_port[dpid][src_mac] = in_port
         self.mac_to_dpid[src_mac] = dpid
         self.port_to_mac.setdefault(dpid, {})
         self.port_to_mac[dpid][in_port] = src_mac
-        
+
         # Learn ARP IP to MAC mapping
         if arp_pkt:
             src_ip = arp_pkt.src_ip
             self.ip_to_mac[src_ip] = src_mac
             self.logger.info("Learned IP %s -> MAC %s", src_ip, src_mac)
-        
+
         if dst_mac in self.mac_to_port[dpid]:
             out_port = self.mac_to_port[dpid][dst_mac]
         else:
             out_port = ofproto.OFPP_FLOOD
-        
+
         actions = [parser.OFPActionOutput(out_port)]
-        
+
         # Install a flow to avoid FLOOD next time
         if out_port != ofproto.OFPP_FLOOD:
             match = parser.OFPMatch(in_port=in_port, eth_dst=dst_mac,
-                                   eth_src=src_mac)
+                                    eth_src=src_mac)
             # Verify if we have a valid buffer_id, if yes avoid to send both
             # flow_mod & packet_out
             if msg.buffer_id != ofproto.OFP_NO_BUFFER:
@@ -135,12 +136,12 @@ class SimpleSwitch13(app_manager.RyuApp):
                 return
             else:
                 self.add_flow(datapath, 1, match, actions)
-        
+
         # Send packet out
         data = None
         if msg.buffer_id == ofproto.OFP_NO_BUFFER:
             data = msg.data
-            
+
         out = parser.OFPPacketOut(datapath=datapath, buffer_id=msg.buffer_id,
                                   in_port=in_port, actions=actions, data=data)
         datapath.send_msg(out)
@@ -164,25 +165,26 @@ class SimpleSwitch13(app_manager.RyuApp):
         if eth.ethertype == ether_types.ETH_TYPE_LLDP:
             # ignore lldp packet
             return
-        
+
         dst_mac = eth.dst
         src_mac = eth.src
         dpid = datapath.id
 
-        self.logger.info("Packet in switch %s from %s to %s at port %s", dpid, src_mac, dst_mac, in_port)
-        
+        self.logger.info(
+            "Packet in switch %s from %s to %s at port %s", dpid, src_mac, dst_mac, in_port)
+
         # Learn mac address to avoid FLOOD next time
         self.mac_to_port.setdefault(dpid, {})
         self.mac_to_port[dpid][src_mac] = in_port
         self.mac_to_dpid[src_mac] = dpid
-        
+
         # Handle ARP packet
         if eth.ethertype == ether_types.ETH_TYPE_ARP:
             arp_pkt = pkt.get_protocol(arp.arp)
             if arp_pkt:
                 # Learn IP to MAC mapping for future use
                 self.ip_to_mac[arp_pkt.src_ip] = src_mac
-                
+
                 if dst_mac == 'ff:ff:ff:ff:ff:ff':  # ARP broadcast
                     # We're handling ARP broadcast, flood it
                     out_port = ofproto.OFPP_FLOOD
@@ -191,22 +193,23 @@ class SimpleSwitch13(app_manager.RyuApp):
                     if msg.buffer_id == ofproto.OFP_NO_BUFFER:
                         data = msg.data
                     out = parser.OFPPacketOut(datapath=datapath, buffer_id=msg.buffer_id,
-                                          in_port=in_port, actions=actions, data=data)
+                                              in_port=in_port, actions=actions, data=data)
                     datapath.send_msg(out)
                     return
-        
+
         # If we know the destination MAC, forward to the correct port
         if dst_mac in self.mac_to_port[dpid]:
             out_port = self.mac_to_port[dpid][dst_mac]
         else:
             # We don't know the destination yet, FLOOD
             out_port = ofproto.OFPP_FLOOD
-        
+
         actions = [parser.OFPActionOutput(out_port)]
-        
+
         # Install a flow to avoid FLOOD next time
         if out_port != ofproto.OFPP_FLOOD:
-            match = parser.OFPMatch(in_port=in_port, eth_dst=dst_mac, eth_src=src_mac)
+            match = parser.OFPMatch(
+                in_port=in_port, eth_dst=dst_mac, eth_src=src_mac)
             # Verify if we have a valid buffer_id, if yes avoid to send both
             # flow_mod & packet_out
             if msg.buffer_id != ofproto.OFP_NO_BUFFER:
@@ -214,12 +217,12 @@ class SimpleSwitch13(app_manager.RyuApp):
                 return
             else:
                 self.add_flow(datapath, 1, match, actions)
-        
+
         # Send packet out
         data = None
         if msg.buffer_id == ofproto.OFP_NO_BUFFER:
             data = msg.data
-            
+
         out = parser.OFPPacketOut(datapath=datapath, buffer_id=msg.buffer_id,
                                   in_port=in_port, actions=actions, data=data)
         datapath.send_msg(out)
@@ -229,14 +232,16 @@ class SimpleSwitch13(app_manager.RyuApp):
         switch_list = get_switch(self.topology_api_app, None)
         switches = [switch.dp.id for switch in switch_list]
         self.net.add_nodes_from(switches)
-        
+
         links_list = get_link(self.topology_api_app, None)
-        links = [(link.src.dpid, link.dst.dpid, {'port': link.src.port_no}) for link in links_list]
+        links = [(link.src.dpid, link.dst.dpid, {
+                  'port': link.src.port_no}) for link in links_list]
         self.net.add_edges_from(links)
-        
-        links = [(link.dst.dpid, link.src.dpid, {'port': link.dst.port_no}) for link in links_list]
+
+        links = [(link.dst.dpid, link.src.dpid, {
+                  'port': link.dst.port_no}) for link in links_list]
         self.net.add_edges_from(links)
-        
+
         self.logger.info("***** Topology updated *****")
         self.logger.info("Nodes: %s", self.net.nodes())
         self.logger.info("Links: %s", self.net.edges())
