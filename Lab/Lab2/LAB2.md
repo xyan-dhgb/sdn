@@ -152,7 +152,7 @@ ryu-manager simple_switch_13.py --verbose
 
 **Bước 4:** Mở terminal thứ 2, chạy lệnh sau để tạo topology với 3 host kết nối qua Open vSwitch, và kết nối controller qua protocol OpenFlow 1.3
 ```bash
-sudo mn --controller=remote,ip=127.0.0.1,port=6653 -- topo=single,3 --switch=ovsk,protocols=OpenFlow13 –mac
+sudo mn --controller=remote,ip=127.0.0.1,port=6653 -- topo=single,3 --switch=ovsk,protocols=OpenFlow13 --mac
 ```
 - Giải thích:
     -  --controller=remote,ip=127.0.0.1,port=6653: Thiết lập bộ điều khiển (controller) từ xa:
